@@ -6,7 +6,7 @@ import time
 
 from pydub import AudioSegment
 
-from .generate_conversation import generate_response
+from .generate_conversation import generate_conversation
 
 
 def _generate_audio_from_text(
@@ -57,7 +57,7 @@ def _text_to_file(text, file_name):
 def new_audio_conversation(topic) -> str:
     shutil.rmtree("temp_audio", ignore_errors=True)
     topic = "technology"
-    text_file = generate_response(topic)
+    text_file = generate_conversation(topic)
     timestamp = str(int(time.time()))
     random_number = str(random.randint(1000, 9999))
     file_name = f"conversations/{topic}_{timestamp}_{random_number}.txt"

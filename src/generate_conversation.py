@@ -17,7 +17,16 @@ examples = [
 ]
 
 
-def generate_response(topic: str):
+def generate_conversation(topic: str, sentiment: str = "positive") -> str:
+    """Generate a conversation about a topic with a given sentiment.
+
+    Args:
+        topic (str): The topic of the conversation.
+        sentiment (str, optional): The sentiment of the conversation. Defaults to "positive".
+
+    Returns:
+        str: A conversation between two people about the topic.
+    """
     template = FewShotPromptTemplate(
         prefix=SYNTHETIC_FEW_SHOT_PREFIX,
         examples=examples,
@@ -32,7 +41,7 @@ def generate_response(topic: str):
 
     generator = SyntheticDataGenerator(template=template, llm=model)
     results = generator.generate(
-        subject=f"Create only one phone conversation between two people about {topic}. only a few sentences are needed for the conversation, every sentence should be separated by a '\n' character.",
+        subject=f"Create only one phone conversation between two people about {topic}. The sentiment for the conversation has to be {sentiment}. only a few sentences are needed for the conversation, every sentence should be separated by a '\n' character.",
         runs=1,
         extra="A:<list of sentences>",
     )
