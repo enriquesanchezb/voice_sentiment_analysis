@@ -1,7 +1,6 @@
-""" 
+"""
 Get sentiment analysis results for the given text
 """
-
 from transformers import pipeline
 
 sentiment_pipeline = pipeline(model="SamLowe/roberta-base-go_emotions")

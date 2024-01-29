@@ -1,8 +1,9 @@
 import os
+import random
 import re
 import shutil
 import time
-import random
+
 from pydub import AudioSegment
 
 from .generate_conversation import generate_response

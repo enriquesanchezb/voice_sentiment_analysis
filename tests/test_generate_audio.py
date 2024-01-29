@@ -1,7 +1,11 @@
 import os
+
+import pytest
+
 from src.generate_audio import new_audio_conversation
 
 
+@pytest.mark.skip(reason="Only works on MacOS")
 def test_new_audio_conversation():
     topic = "technology"
 

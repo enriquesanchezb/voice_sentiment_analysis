@@ -1,10 +1,13 @@
-from langchain.prompts import FewShotPromptTemplate, PromptTemplate
+from langchain.prompts import FewShotPromptTemplate
+from langchain.prompts import PromptTemplate
+from langchain_community.llms import Ollama
 from langchain_experimental.tabular_synthetic_data.base import SyntheticDataGenerator
 from langchain_experimental.tabular_synthetic_data.prompts import (
     SYNTHETIC_FEW_SHOT_PREFIX,
+)
+from langchain_experimental.tabular_synthetic_data.prompts import (
     SYNTHETIC_FEW_SHOT_SUFFIX,
 )
-from langchain_community.llms import Ollama
 
 
 examples = [

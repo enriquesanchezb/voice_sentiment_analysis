@@ -1,7 +1,6 @@
 """
 This module is used to transcribe the audio file and return the text
 """
-
 from faster_whisper import WhisperModel
 
 
