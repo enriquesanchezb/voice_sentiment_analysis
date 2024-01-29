@@ -1,8 +1,4 @@
-from typing import List
-
 from langchain.prompts import FewShotPromptTemplate, PromptTemplate
-from langchain.output_parsers import PydanticOutputParser
-from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain_experimental.tabular_synthetic_data.base import SyntheticDataGenerator
 from langchain_experimental.tabular_synthetic_data.prompts import (
     SYNTHETIC_FEW_SHOT_PREFIX,
