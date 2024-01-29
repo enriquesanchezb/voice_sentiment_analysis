@@ -1,4 +1,0 @@
-[[ slnc 5000 ]]
-[[rate 150]][[volm 0.9]]
-This is a test
-[[ slnc 1300 ]]
