@@ -8,7 +8,7 @@ from src.summarization import topics_for_text
 
 def test_generate_conversation_positive_sentiment():
     # Define the input parameters
-    topic = "technology"
+    topic = "ai"
     sentiment = "admiration"
 
     # Call the function
@@ -29,4 +29,4 @@ def test_generate_conversation_positive_sentiment():
     new_topics = topics_for_text(temp_filepath)
     os.remove(temp_filepath)
 
-    assert topic in new_topics
+    assert topic in new_topics, "Topic is not in the index of new_topics"
