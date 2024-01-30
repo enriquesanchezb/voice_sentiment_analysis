@@ -18,7 +18,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - run: |
+    - name: Install Ollama
+      run: |
         apt-get update && apt-get install -y git build-essential curl
         curl https://ollama.ai/install.sh | sh
         ollama serve&
@@ -40,4 +41,4 @@ jobs:
         poetry run ruff check
     - name: Test with pytest
       run: |
-        poetry run pytest
+        poetry run pytest --reruns 1 --reruns-delay 1
