@@ -36,7 +36,7 @@ def test_topics_conversation(sentiment, topic):
 @pytest.mark.parametrize("topic", TOPICS)
 def test_summary_conversation(sentiment, topic):
     # Call the function
-    conversation = generate_conversation(topic, sentiment, llm="llama2")
+    conversation = generate_conversation(topic, sentiment, llm="mistral")
 
     # Save the conversation to a temporary text file
     with tempfile.NamedTemporaryFile(mode="w", delete=False) as file:
@@ -49,12 +49,14 @@ def test_summary_conversation(sentiment, topic):
     assert summary != ""
 
     model = Ollama(model="llama2")
-    prompt = PromptTemplate(
-        template="""You will read a summary of a conversation with a sentiment and a topic. Your task is to analyze the conversation and the summary and returns a json object where the key is summary, topic, sentiment and the value is True if the sentiment and the topic are correct and False otherwise. The conversation is the following: {conversation} The summary is the following: {summary}, the topic is {topic} and the sentiment is the following: {sentiment}
-        JSON:""",
-        input_variables=["conversation", "summary", "topic", "sentiment"],
-    )
     output_parser = JsonOutputParser()
+    prompt = PromptTemplate(
+        template="""Given the following conversation: "{conversation}" and its summary: "{summary}", where the topic is stated as "{topic}" and the sentiment as "{sentiment}", evaluate whether the summary, topic, and sentiment are accurate in relation to the conversation. {format_instructions} The JSON object would have the keys 'summary', 'topic', 'sentiment', assigning True if they are correct and False otherwise to all of them. Dont return other keys or values or any other information.""",
+        input_variables=["conversation", "summary", "topic", "sentiment"],
+        partial_variables={
+            "format_instructions": output_parser.get_format_instructions()
+        },
+    )
     chain = prompt | model | output_parser
     result = chain.invoke(
         {
@@ -64,6 +66,7 @@ def test_summary_conversation(sentiment, topic):
             "sentiment": sentiment,
         }
     )
+
     assert result["summary"], "The summary is not correct"
     assert result["topic"], "The topic is not correct"
     assert result["sentiment"], "The sentiment is not correct"
