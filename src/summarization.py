@@ -4,7 +4,7 @@ from langchain_community.document_loaders import TextLoader
 from langchain_community.llms import Ollama
 
 
-def topics_for_text(file_conv: str) -> str:
+def topics_for_text(file_conv: str, llm: str = "mistral") -> str:
     """Get the topics for a text.
 
     Args:
@@ -18,7 +18,7 @@ def topics_for_text(file_conv: str) -> str:
     TOPICS:"""
 
     prompt = PromptTemplate.from_template(prompt_template)
-    llm = Ollama(model="mistral")
+    llm = Ollama(model=llm)
 
     loader = TextLoader(file_conv)
     docs = loader.load()

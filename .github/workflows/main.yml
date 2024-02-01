@@ -5,40 +5,48 @@ name: Python application
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 permissions:
   contents: read
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - name: Install Ollama
-      run: |
-        apt-get update && apt-get install -y git build-essential curl
-        curl https://ollama.ai/install.sh | sh
-        ollama serve&
-        ollama pull mistral
-    - uses: actions/checkout@v4
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.10"
-    - name: Install Poetry
-      run: |
-        curl -sSL https://install.python-poetry.org | python3 -
-        echo "$HOME/.local/bin" >> $GITHUB_PATH
-    - name: Install dependencies with Poetry
-      run: |
-        poetry install
-    - name: Lint with ruff
-      run: |
-        poetry run ruff check
-    - name: Test with pytest
-      run: |
-        poetry run pytest --reruns 1 --reruns-delay 1
+      - name: Install Ollama
+        run: |
+          apt-get update && apt-get install -y git build-essential curl
+          curl https://ollama.ai/install.sh | sh
+          ollama serve&
+          ollama pull mistral
+          ollama pull llama2
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - name: Install dependencies with Poetry
+        run: |
+          poetry install
+  lint:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lint with ruff
+        run: |
+          poetry run ruff check
+  test:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test with pytest
+        run: |
+          poetry run pytest --reruns 1 --reruns-delay 1

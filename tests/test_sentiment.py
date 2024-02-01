@@ -44,7 +44,7 @@ def test_analyze_sentiment(sentiment):
         template="Generate a basic sentence with this sentiment: {sentiment}.",
         input_variables=["sentiment"],
     )
-    model = Ollama(model="mistral")
+    model = Ollama(model="llama2")
     output_parser = StrOutputParser()
 
     chain = prompt | model | output_parser

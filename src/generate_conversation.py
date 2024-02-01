@@ -12,12 +12,14 @@ from langchain_experimental.tabular_synthetic_data.prompts import (
 
 examples = [
     {
-        "example": """"Hola, como estas?", "Bien, y tu?, "Muy bien, gracias, y tu?", "Yo tambien muy bien, gracias", "Que bueno, nos vemos luego!", "Adios!"]"""
+        "example": """"Hello, how are you?", "Great! you?", "Good, good thanks", "Great! See you later!", "See you!"]"""
     }
 ]
 
 
-def generate_conversation(topic: str, sentiment: str = "positive") -> str:
+def generate_conversation(
+    topic: str, sentiment: str = "positive", llm: str = "mistral"
+) -> str:
     """Generate a conversation about a topic with a given sentiment.
 
     Args:
@@ -37,7 +39,7 @@ def generate_conversation(topic: str, sentiment: str = "positive") -> str:
         ),
     )
 
-    model = Ollama(model="mistral")
+    model = Ollama(model=llm)
 
     generator = SyntheticDataGenerator(template=template, llm=model)
     results = generator.generate(

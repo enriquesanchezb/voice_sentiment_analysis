@@ -1,18 +1,21 @@
 import os
 import tempfile
 
+import pytest
+
 from src.generate_conversation import generate_conversation
 from src.sentiment import analyze_sentiment
 from src.summarization import topics_for_text
 
+SENTIMENTS = ["neutral", "sadness", "neutral", "joy"]
+TOPICS = ["ai", "soccer", "art", "science"]
 
-def test_generate_conversation_positive_sentiment():
-    # Define the input parameters
-    topic = "ai"
-    sentiment = "admiration"
 
+@pytest.mark.parametrize("sentiment", SENTIMENTS)
+@pytest.mark.parametrize("topic", TOPICS)
+def test_generate_conversation(sentiment, topic):
     # Call the function
-    conversation = generate_conversation(topic, sentiment)
+    conversation = generate_conversation(topic, sentiment, llm="llama2")
 
     new_sentiment = analyze_sentiment(conversation)
     # Assert that the conversation has a positive sentiment
@@ -28,5 +31,4 @@ def test_generate_conversation_positive_sentiment():
 
     new_topics = topics_for_text(temp_filepath)
     os.remove(temp_filepath)
-
-    assert topic in new_topics, "Topic is not in the index of new_topics"
+    assert any(topic in word for word in new_topics)
